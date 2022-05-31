@@ -3,6 +3,15 @@ const error = require('../../../utils/error');
 
 const TABLE_NAME = 'credentials';
 
+async function getCredentialFromBody(body) {
+	const credential = { id: body.id };
+
+	if (body.username) credential.username = body.username;
+	if (body.password) credential.password = await auth.hash(body.password, 5);
+
+	return credential;
+}
+
 module.exports = function (injected_store) {
 	let store = injected_store;
 
@@ -11,21 +20,32 @@ module.exports = function (injected_store) {
 		store = require('../../../store/' + config.store.main);
 	}
 
-	async function upsert(body) {
-		const credentials = {
-			id: body.id,
-		};
+	function insert(body) {
+		return getCredentialFromBody(body).then((credential) => {
+			return new Promise((resolve, reject) => {
+				store
+					.insert(TABLE_NAME, credential)
+					.then((result) => resolve(result))
+					.catch((error) => reject(error));
+			});
+		});
+	}
 
-		if (body.username) credentials.username = body.username;
-		if (body.password) credentials.password = await auth.hash(body.password, 5);
-
-		return store.upsert(TABLE_NAME, credentials);
+	function update(body) {
+		return getCredentialFromBody(body).then((credential) => {
+			return new Promise((resolve, reject) => {
+				store
+					.update(TABLE_NAME, credential)
+					.then((result) => resolve(result))
+					.catch((error) => reject(error));
+			});
+		});
 	}
 
 	async function login(username, password) {
 		const credentials = await store.query(TABLE_NAME, { username: username });
-		if(!credentials) throw error('Invalid credentials', 401);
-		
+		if (!credentials) throw error('Invalid credentials', 401);
+
 		return auth.compare(credentials.password, password).then((is_correct) => {
 			if (is_correct) {
 				return auth.sign(JSON.parse(JSON.stringify(credentials)));
@@ -36,7 +56,8 @@ module.exports = function (injected_store) {
 	}
 
 	return {
-		upsert,
+		insert,
+		update,
 		login,
 	};
 };

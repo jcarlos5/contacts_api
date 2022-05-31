@@ -4,6 +4,13 @@ const auth = require('../auth');
 const TABLE_NAME = 'users';
 const TABLE_FOLLOW_NAME = 'follows';
 
+function getUserFromBody(body) {
+	return {
+		id: body.id || nanoid(),
+		name: body.name,
+	};
+}
+
 module.exports = function (injected_store) {
 	let store = injected_store;
 
@@ -20,21 +27,39 @@ module.exports = function (injected_store) {
 		return store.get(TABLE_NAME, id);
 	}
 
-	async function upsert(body) {
-		const user = {
-			id: body.id || nanoid(),
-			name: body.name,
-		};
-
+	function insert(body) {
+		const user = getUserFromBody(body);
 		if (body.username || body.password) {
-			await auth.upsert({
-				id: user.id,
-				username: body.username,
-				password: body.password,
-			});
+			return auth
+				.insert({
+					id: user.id,
+					username: body.username,
+					password: body.password,
+				})
+				.then((_result) => {
+					store.insert(TABLE_NAME, user);
+				});
 		}
 
-		return store.upsert(TABLE_NAME, user);
+		return store.insert(TABLE_NAME, user);
+	}
+
+	function update(body) {
+		const user = getUserFromBody(body);
+
+		if (body.username || body.password) {
+			return auth
+				.update({
+					id: user.id,
+					username: body.username,
+					password: body.password,
+				})
+				.then((_result) => {
+					store.update(TABLE_NAME, user);
+				});
+		}
+
+		return store.update(TABLE_NAME, user);
 	}
 
 	function follow(from, to) {
@@ -47,7 +72,8 @@ module.exports = function (injected_store) {
 	return {
 		list,
 		get,
-		upsert,
+		insert,
+		update,
 		follow,
 	};
 };

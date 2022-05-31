@@ -17,7 +17,6 @@ Content-Type: application/json
 }
 
 ### REGISTER_USER
-### CREATE USER WITH AUTH
 POST {{$dotenv %API_URL}}/user
 Content-Type: application/json
 

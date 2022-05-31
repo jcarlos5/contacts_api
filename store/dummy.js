@@ -11,7 +11,14 @@ async function get(table, id) {
 	return collection.filter((item) => item.id === id)[0] || null;
 }
 
-async function upsert(table, data) {
+async function insert(table, data) {
+	if (!db[table]) {
+		db[table] = [];
+	}
+	db[table].push(data);
+}
+
+async function update(table, data) {
 	if (!db[table]) {
 		db[table] = [];
 	}
@@ -32,7 +39,8 @@ async function query(table, q) {
 module.exports = {
 	list,
 	get,
-	upsert,
+	insert,
+	update,
 	remove,
 	query,
 };

@@ -5,7 +5,7 @@ CREATE TABLE users(
 
 CREATE TABLE credentials(
     `id`        VARCHAR(32) PRIMARY KEY,
-    `username`  VARCHAR(32),
+    `username`  VARCHAR(32) UNIQUE,
     `password`  VARCHAR(64)
 );
 

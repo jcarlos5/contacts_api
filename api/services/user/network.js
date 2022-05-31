@@ -8,8 +8,8 @@ const router = express.Router();
 // ENDPOINTS
 router.get('/', list);
 router.get('/:id', get);
-router.post('/', upsert);
-router.put('/', secure('update'), upsert);
+router.post('/', insert);
+router.put('/', secure('update'), update);
 
 router.post('/follow/:id', secure('follow'), follow);
 
@@ -32,9 +32,18 @@ function get(req, res, next) {
 		.catch(next);
 }
 
-function upsert(req, res, next) {
+function insert(req, res, next) {
 	controller
-		.upsert(req.body)
+		.insert(req.body)
+		.then((user) => {
+			response.success(req, res, user, 200);
+		})
+		.catch(next);
+}
+
+function update(req, res, next) {
+	controller
+		.update(req.body)
 		.then((user) => {
 			response.success(req, res, user, 200);
 		})

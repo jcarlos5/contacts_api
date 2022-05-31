@@ -15,7 +15,7 @@ Content-Type: application/json
 
 {
     "id": "test_user_id",
-    "name": "user_test_edited",
+    "name": "user_test_edited"
 }
 
 ### GET AUTHORIZATION
@@ -35,5 +35,6 @@ Authorization: Bearer {{login.response.body.data}}
 
 {
     "id": "test_user_id",
-    "name": "user_test_edited_success"
+    "name": "user_test_edited_success",
+    "username": "user_test_edited"
 }

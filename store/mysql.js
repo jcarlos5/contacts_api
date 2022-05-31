@@ -51,14 +51,32 @@ function get(table, id) {
 	});
 }
 
-function upsert(table, data) {
+function insert(table, data) {
 	return new Promise((resolve, reject) => {
-		connection.query(`INSERT INTO ${table} SET ? ON DUPLICATE KEY UPDATE ?`, [data, data], (error, result) => {
+		connection.query(`INSERT INTO ${table} SET ?`, data, (error, result) => {
 			if (error) return reject(error);
 			resolve(result);
 		});
 	});
 }
+
+function update(table, data) {
+	return new Promise((resolve, reject) => {
+		connection.query(`UPDATE ${table} SET ? WHERE id = ?`, [data, data.id], (error, result) => {
+			if (error) return reject(error);
+			resolve(result);
+		});
+	});
+}
+
+// function upsert(table, data) {
+// 	return new Promise((resolve, reject) => {
+// 		connection.query(`INSERT INTO ${table} SET ? ON DUPLICATE PRIMARY KEY UPDATE ?`, [data, data], (error, result) => {
+// 			if (error) return reject(error);
+// 			resolve(result);
+// 		});
+// 	});
+// }
 
 function query(table, q) {
 	return new Promise((resolve, reject) => {
@@ -72,6 +90,7 @@ function query(table, q) {
 module.exports = {
 	list,
 	get,
-	upsert,
+	insert,
+	update,
 	query,
 };
