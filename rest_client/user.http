@@ -1,0 +1,23 @@
+### LIST USERS
+GET {{$dotenv %API_URL}}/user
+
+### GET USER WITH ID 123
+GET {{$dotenv %API_URL}}/user/123
+
+### CREATE USER WITHOUT AUTH
+POST {{$dotenv %API_URL}}/user
+Content-Type: application/json
+
+{
+    "name": "jcarlos"
+}
+
+### CREATE USER WITH AUTH
+POST {{$dotenv %API_URL}}/user
+Content-Type: application/json
+
+{
+    "name": "jcarlos",
+    "username": "jcarlos5",
+    "password": "jcarlos5"
+}

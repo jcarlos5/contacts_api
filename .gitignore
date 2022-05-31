@@ -1,0 +1,19 @@
+# Dependency directories
+node_modules/
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# dotenv environment variable files of rest_client
+rest_client/.env
+rest_client/.env.development.local
+rest_client/.env.test.local
+rest_client/.env.production.local
+rest_client/.env.local
+
+# VSCode environment
+.vscode/setting.json

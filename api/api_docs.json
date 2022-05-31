@@ -1,0 +1,86 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"description": "API for contact social network",
+		"version": "1.0.0",
+		"title": "Contacs Network"
+	},
+	"host": "localhost:3000",
+	"basePath": "/api",
+	"tags": [
+		{
+			"name": "user",
+			"description": "Operations about user"
+		}
+	],
+	"schemes": ["https", "http"],
+	"paths": {
+		"/user": {
+			"get": {
+				"tags": ["user"],
+				"summary": "List all users",
+				"description": "This can only by admin user.",
+				"operationId": "listUser",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "Users list",
+						"required": true,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/User"
+							}
+						}
+					}
+				],
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				}
+			},
+			"post": {
+				"tags": ["user"],
+				"summary": "Create user",
+				"description": "This can only be done by the unlogged in user.",
+				"operationId": "createUser",
+				"produces": ["application/json"],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "Created user object",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/User"
+						}
+					}
+				],
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"User": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"username": {
+					"type": "string"
+				},
+				"password": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

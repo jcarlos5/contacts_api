@@ -1,0 +1,37 @@
+### LOGIN WITH INCORRECT CREDENTIALS
+POST {{$dotenv %API_URL}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "inexisting_user",
+    "password": "any_password"
+}
+
+### LOGIN WITH INCORRECT PASSWORD
+POST {{$dotenv %API_URL}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "jcarlos5",
+    "password": "any_password"
+}
+
+### REGISTER_USER
+### CREATE USER WITH AUTH
+POST {{$dotenv %API_URL}}/user
+Content-Type: application/json
+
+{
+    "name": "user_login_test",
+    "username": "login_test",
+    "password": "login_test"
+}
+
+### LOGIN WITH CORRECT CREDENTIALS
+POST {{$dotenv %API_URL}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "login_test",
+    "password": "login_test"
+}

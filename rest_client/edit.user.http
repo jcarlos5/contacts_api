@@ -1,0 +1,39 @@
+### CREATE TEST USER
+POST {{$dotenv %API_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test_user_id",
+    "name": "user test",
+    "username": "user_test",
+    "password": "user_test"
+}
+
+### EDIT USER WHITOUT AUTHORIZATION
+PUT {{$dotenv %API_URL}}/user
+Content-Type: application/json
+
+{
+    "id": "test_user_id",
+    "name": "user_test_edited",
+}
+
+### GET AUTHORIZATION
+# @name login
+POST {{$dotenv %API_URL}}/auth/login
+Content-Type: application/json
+
+{
+    "username": "user_test",
+    "password": "user_test"
+}
+
+### EDIT USER WITH AUTHORIZATION
+PUT {{$dotenv %API_URL}}/user
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.data}}
+
+{
+    "id": "test_user_id",
+    "name": "user_test_edited_success"
+}
