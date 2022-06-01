@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api:
+    image: contacts_api:1.0
+    container_name: api
+    env_file:
+      - .env
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - MYSQL_HOST=database
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASS=${MYSQL_PASS}
+      - MYSQL_DB=${MYSQL_DB}
+    depends_on:
+      - database
+    ports:
+      - "3000:3000"
+
+  database:
+    image: mysql:5.7
+    container_name: database
+    command: --init-file /data/application/init.sql
+    volumes:
+      - ./store/mysql.schema.sql:/data/application/init.sql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DB}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASS}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASS}

@@ -4,7 +4,9 @@
   "description": "API for contacts social network",
   "main": "api/index.js",
   "scripts": {
-    "dev": "nodemon api/index.js"
+    "dev": "nodemon api/index.js",
+    "docker_dev": "nodemon api/index.js -L",
+    "start": "node api/index.js"
   },
   "repository": {
     "type": "git",

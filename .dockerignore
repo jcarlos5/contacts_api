@@ -1,0 +1,41 @@
+# Dependency directories
+node_modules
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# ONLY FOR CONTAINERS
+.env.example
+
+# dotenv environment variable files of rest_client
+rest_client/.env
+rest_client/.env.development.local
+rest_client/.env.test.local
+rest_client/.env.production.local
+rest_client/.env.local
+
+# VSCode environment
+.vscode/setting.json
+
+# Prettier
+.prettierrc
+.prettierrc.json
+
+# Docker
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Git
+.git
+.gitignore
+
+# Rest client
+rest_client
+
+# Readme
+*.md

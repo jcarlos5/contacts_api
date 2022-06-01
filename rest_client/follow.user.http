@@ -9,6 +9,10 @@ Content-Type: application/json
 }
 
 ### FOLLOW USER
-POST {{$dotenv %API_URL}}/user/follow/123
+POST {{$dotenv %API_URL}}/user/follow/dU_Qqsja9tAifYZQPWcSN
 Content-Type: application/json
 Authorization: Bearer {{login.response.body.data}}
+
+### VIEW FOLLOWINGS
+GET {{$dotenv %API_URL}}/user/test_user_id/following
+Content-Type: application/json

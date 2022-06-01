@@ -16,7 +16,7 @@ function handleConnection() {
 
 	connection.connect((err) => {
 		if (err) {
-			console.error('[ERROR]', err.message);
+			console.error('[ERROR]', err);
 			setTimeout(handleConnection, config.mysql.reconection_time);
 		} else {
 			console.log('[INFO]', 'Database connected');
@@ -24,7 +24,7 @@ function handleConnection() {
 	});
 
 	connection.on('error', (err) => {
-		console.error('[ERROR]', err.message);
+		console.error('[ERROR]', err);
 		if (err.code === 'PROTOCOL_CONNECTION_LOST') {
 			handleConnection();
 		}
@@ -69,18 +69,16 @@ function update(table, data) {
 	});
 }
 
-// function upsert(table, data) {
-// 	return new Promise((resolve, reject) => {
-// 		connection.query(`INSERT INTO ${table} SET ? ON DUPLICATE PRIMARY KEY UPDATE ?`, [data, data], (error, result) => {
-// 			if (error) return reject(error);
-// 			resolve(result);
-// 		});
-// 	});
-// }
+function query(table, q, join) {
+	let join_query = '';
+	if (join) {
+		for (const key in join) {
+			join_query += `JOIN ${key} ON ${join[key]} = ${key}.id `;
+		}
+	}
 
-function query(table, q) {
 	return new Promise((resolve, reject) => {
-		connection.query(`SELECT * FROM ${table} WHERE ?`, q, (error, data) => {
+		connection.query(`SELECT * FROM ${table} ${join_query} WHERE ?`, q, (error, data) => {
 			if (error) return reject(error);
 			resolve(data[0] || null);
 		});
